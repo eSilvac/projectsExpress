@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-mongoose.connect('mongodb://localhost:27017/project-app', {useNewUrlParser: true, useUnifiedTopology: true});
 
 let userSchema = new mongoose.Schema({
   email: {

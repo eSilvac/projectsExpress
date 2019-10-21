@@ -4,7 +4,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const app = express();
-const PORT = process.env.PORT || 3000;
+
+// Database
+
+require("./models/config");
 
 // Routes
 const userRoute = require('./routes/user');
@@ -30,9 +33,12 @@ app.use((req, res, next) => {
 
 // Handle Errors 500
 app.use((err, req, res, next) => {
-  console.log(err.stack);
-
-  res.sendFile(path.join(__dirname, '../public/500.html'));
+  if (err.name === "ValidationError") {
+    res.status(422).json({ errors: err.errors });  
+  } else {
+    console.log(err);
+    res.status(500).json({ error: err.message  });
+  }
 });
 
-app.listen(PORT);
+module.exports = app;
