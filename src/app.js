@@ -1,12 +1,11 @@
 // Initial Config
 const path = require('path');
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
-const cookieSession = require('cookie-session');
 const app = express();
 
 // Database
-
 require("./models/config");
 
 // Routes
@@ -14,12 +13,6 @@ const userRoute = require('./routes/user');
 const projectRoute = require('./routes/project');
 
 // Middleware
-app.use(cookieSession({
-  secret: "randomNumber",
-  maxAge: 24 * 60 * 1000 // 1 minute  
-}));
-
-
 app.use(bodyParser.json());
 app.use(userRoute);
 app.use(projectRoute);

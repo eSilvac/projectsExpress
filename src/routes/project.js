@@ -6,7 +6,7 @@ const isLoggedIn = require("../middleware/isLoggedIn.js");
 
 router.get('/projects', isLoggedIn, async (req, res, next) => {
   try {
-    const projects = await Project.find({_user: req.session.user});
+    const projects = await Project.find({_user: req.currentUser});
     res.json(projects);  
   } catch (err) {
     next(err);   
@@ -19,7 +19,7 @@ router.post('/project', isLoggedIn, async (req, res) => {
   }
 
   let newProject = req.body;
-  newProject._user = req.session.user;
+  newProject._user = req.currentUser;
   newProject.createdAt = new Date();
   
   try {

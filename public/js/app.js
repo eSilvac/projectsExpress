@@ -1,6 +1,7 @@
 var template = Handlebars.compile($("#project-template").html());
 
 $(document).ready(() => {
+  console.log("ads")
   showProjects();
 });
 
@@ -11,6 +12,9 @@ $("#create-project").on("click", () => {
     method: "POST",
     url: "/project",
     data: JSON.stringify({ title, description }),
+    headers: {
+      "authorization": token
+    },
     contentType: "application/json"
   }).done((data) => { 
     $("#project-modal").modal("hide");
@@ -28,6 +32,7 @@ $("#register-btn").on("click", () => {
     data: JSON.stringify({ email, password }),
     contentType: "application/json"
   }).done((data) => { 
+    localStorage.setItem("authenticationToken", data.token)
     showProjects();
   }).fail((error) => {
     showErrors(error);
@@ -44,6 +49,7 @@ $("#login-btn").on("click", () => {
     data: JSON.stringify({ email, password }),
     contentType: "application/json"
   }).done((data) => { 
+    localStorage.setItem("authenticationToken", data.token)
     showProjects();
   }).fail((error) => {
     showErrors(error);
@@ -51,9 +57,14 @@ $("#login-btn").on("click", () => {
 });
 
 showProjects = () => {
+  const token = localStorage.getItem("authenticationToken")
+
   $.ajax({
     method: "GET",
-    url: "/projects"
+    url: "/projects",
+    headers: {
+      "authorization": token
+    }
   })
     .done((data) => {
       $("#register, #login").hide();
