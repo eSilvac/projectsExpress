@@ -5,7 +5,7 @@ const requireUser = async (req, res, next) => {
   const token = req.headers["authorization"];
   const verySecret = "6926F2BF8BC542620DB47571A88C1DA761C976744CA554833C4BAA917ACD0E20";
   
-  if (!token) {
+  if (token == null) {
     res.status(401).json({ error: "No Authorized" });
   } else {
     try {

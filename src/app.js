@@ -13,11 +13,12 @@ const userRoute = require('./routes/user');
 const projectRoute = require('./routes/project');
 
 // Middleware
+
 app.use(bodyParser.json());
 app.use(userRoute);
 app.use(projectRoute);
+app.use(express.json());
 app.use(express.static('public'));
-app.use(express.json())
 
 // Handle Errors 404
 app.use((req, res, next) => {

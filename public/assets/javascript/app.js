@@ -16,43 +16,9 @@ $("#create-project").on("click", () => {
       "authorization": token
     },
     contentType: "application/json"
-  }).done((data) => { 
+  }).done((data) => {
     $("#project-modal").modal("hide");
     loadProjects(data);
-  });
-});
-
-$("#register-btn").on("click", () => {
-  let email = $("#register-email").val();
-  let password = $("#register-password").val();
-  
-  $.ajax({
-    method: "POST",
-    url: "/register",
-    data: JSON.stringify({ email, password }),
-    contentType: "application/json"
-  }).done((data) => { 
-    localStorage.setItem("authenticationToken", data.token)
-    showProjects();
-  }).fail((error) => {
-    showErrors(error);
-  })
-});
-
-$("#login-btn").on("click", () => {
-  let email = $("#login-email").val();
-  let password = $("#login-password").val();
-  
-  $.ajax({
-    method: "POST",
-    url: "/login",
-    data: JSON.stringify({ email, password }),
-    contentType: "application/json"
-  }).done((data) => { 
-    localStorage.setItem("authenticationToken", data.token)
-    showProjects();
-  }).fail((error) => {
-    showErrors(error);
   });
 });
 
@@ -70,7 +36,7 @@ showProjects = () => {
       $("#register, #login").hide();
       $("#projects").show();
       $("nav #actions").show();
-      
+
       data.forEach(project => {
         loadProjects(project);
       });
@@ -96,6 +62,12 @@ showErrors = (error) => {
 
 loadProjects = (project) => {
   $("tbody").append(template(project)); // imprimimos la respuesta
+}
+
+handleErrors = (error) => {
+  if (error.status == 422) {
+    console.log("Yey")
+  }
 }
 
 $("#register-link").on("click", showRegister);
